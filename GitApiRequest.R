@@ -40,3 +40,14 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 
 #Interrogating the GitAPI 
 
+#The information about my github profile is 
+#stored in a data frame called 'myData'.  I can access different parts of the data 
+#frame using the $ operator, shown below.
+
+#I will store numerous differet details about my GitHub profile in a data frame called 'myInfo'. 
+#I will access different parts of the data frame using the $ operator
+
+myData = fromJSON("https://api.github.com/users/ohalloa2") #Data frame which holds my information 
+myData$followers #Displays number of followers i have
+myData$public_repos #Displays number of public repositories i have
+

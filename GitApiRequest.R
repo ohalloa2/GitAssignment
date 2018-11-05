@@ -61,6 +61,12 @@ myFollowers$login #Gives details of the usernames of all users who follow me
 noFollowers = length(myFollowers$login) #Give the number of people who follow my profile
 noFollowers
 
+#Accessing information about the users I am following 
+usersImFollowing = fromJSON("https://api.github.com/users/ohalloa2/following{/other_user}") #** Not sure if /other_user is used correctly here 
+usersImFollowing$login #Gives details of the usernames of all the people I follow 
+noImFollowing = length(usersImFollowing$login)
+noImFollowing
+
 #Accessing repository specific information 
 repos=fromJSON("https://api.github.com/users/ohalloa2/repos") #Specific link to find details about my different repositories 
 repos$name #Details of the names of my public repositories

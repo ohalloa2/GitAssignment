@@ -38,7 +38,10 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 
 #Above code sourced from https://towardsdatascience.com/accessing-data-from-github-api-using-r-3633fb62cb08
 
+#******************************************************************************************************************************#
+
 #Interrogating the GitAPI 
+#**************************#
 
 #The information about my github profile is 
 #stored in a data frame called 'myData'.  I can access different parts of the data 
@@ -50,4 +53,12 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 myData = fromJSON("https://api.github.com/users/ohalloa2") #Data frame which holds my information 
 myData$followers #Displays number of followers i have
 myData$public_repos #Displays number of public repositories i have
+
+
+#Accessing information about my followers 
+myFollowers = fromJSON("https://api.github.com/users/ohalloa2/followers") #Specific link to find details about my followers 
+myFollowers$login #Gives details of the usernames of all users who follow me
+noFollowers = length(myFollowers$login) #Give the number of people who follow my profile
+noFollowers
+
 

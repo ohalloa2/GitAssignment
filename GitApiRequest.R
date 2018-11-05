@@ -58,19 +58,42 @@ myFollowers$login #Gives details of the usernames of all users who follow me
 noFollowers = length(myFollowers$login) #Give the number of people who follow my profile
 noFollowers
 
+#Other types of information available to me in myFollowers data base 
+myFollowers$type
+myFollowers$starred_url
+
 #Accessing information about the users I am following 
 usersImFollowing = fromJSON("https://api.github.com/users/ohalloa2/following") 
 usersImFollowing$login #Gives details of the usernames of all the people I follow 
 noImFollowing = length(usersImFollowing$login)
 noImFollowing
 
+usersImFollowing$type #Details of the types of people I follow
+#everyone I follow is of type user 
+usersImFollowing$followers_url #this will give me the urls for later when I'm finding other users information 
+#**sample output: "https://api.github.com/users/toconno5/followers"  - used later in code 
+usersImFollowing$site_admin #Gives true/False details of whether the people I am following are admins or not 
+#no one I am following is a site administrator 
+
 #Accessing repository specific information 
 repos=fromJSON("https://api.github.com/users/ohalloa2/repos") #Specific link to find details about my different repositories 
 repos$name #Details of the names of my public repositories
 repos$created_at #Gives details of the date the repositories were created 
 
+repos$private #outlines whether my repositories are private or not 
+#repos$size .. unsure of what this is currently returning
+
+repos$language #Displays the languages of the different repositories 
+myLanguages = repos$language
+aggregate(data.frame(count = myLanguages), list(value =myLanguages), length) #Data frame displaying count for each language 
+
+df_uniq = unique(myLanguages)
+length(df_uniq)
+
 lcaRepos <- fromJSON("https://api.github.com/repos/ohalloa2/CS3012_LCA/commits")
 lcaRepos$commit$message #The details I included describing each commit to LCA assignment repository 
+#noCommits=length(lcaRepos$commit)
+#noCommits
 
 #Can repeat the process above for other users to gether information about their profiles 
 #Do this by changing the user name in the link
@@ -83,5 +106,14 @@ toconno5$login #names of all users that are following toconno5
 
 toconno5Repos=fromJSON("https://api.github.com/users/toconno5/repos") 
 toconno5Repos$name #names of all toconno5's repositories 
+#toconno5Repos$language
+#no=length(toconno5Repos$language)
+#no
+
+#Accessing information of starred items by phadej
+starred = fromJSON("https://api.github.com/users/octocat/starred")
+starred$name
+
+
 
 

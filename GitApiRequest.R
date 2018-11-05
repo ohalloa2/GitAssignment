@@ -5,13 +5,9 @@ library(httpuv)
 #install.packages("httr")
 library(httr)
 
-#Don't need these yet 
-#require(devtools)
-#install_github('rCharts', 'ramnathv')
-#library(rCharts)
-
 # Can be github, linkedin etc depending on application
 oauth_endpoints("github")
+# Change based on what your application is
 
 # Change based on what you 
 myapp <- oauth_app(appname = "GitAssignment",
@@ -19,8 +15,7 @@ myapp <- oauth_app(appname = "GitAssignment",
                    secret = "efcf9c80d35666e9ed2e4a080cfc022754990488")
 
 # Get OAuth credentials
-#github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
-github_token = github_init_oauth1.0(httr::oauth_endpoints("github"), myapp)
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
 
 # Use API
 gtoken <- config(token = github_token)
@@ -37,8 +32,8 @@ gitDF = jsonlite::fromJSON(jsonlite::toJSON(json1))
 
 # Subset data.frame
 gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
-
 #Above code sourced from https://towardsdatascience.com/accessing-data-from-github-api-using-r-3633fb62cb08
+
 
 #******************************************************************************************************************************#
 

@@ -1,13 +1,14 @@
-install.packages("jsonlite")
+#install.packages("jsonlite")
 library(jsonlite)
-install.packages("httpuv")
+#install.packages("httpuv")
 library(httpuv)
-install.packages("httr")
+#install.packages("httr")
 library(httr)
 
-require(devtools)
-install_github('rCharts', 'ramnathv')
-library(rCharts)
+#Don't need these yet 
+#require(devtools)
+#install_github('rCharts', 'ramnathv')
+#library(rCharts)
 
 # Can be github, linkedin etc depending on application
 oauth_endpoints("github")
@@ -58,7 +59,7 @@ noFollowers = length(myFollowers$login) #Give the number of people who follow my
 noFollowers
 
 #Accessing information about the users I am following 
-usersImFollowing = fromJSON("https://api.github.com/users/ohalloa2/following{/other_user}") #** Not sure if /other_user is used correctly here 
+usersImFollowing = fromJSON("https://api.github.com/users/ohalloa2/following") 
 usersImFollowing$login #Gives details of the usernames of all the people I follow 
 noImFollowing = length(usersImFollowing$login)
 noImFollowing

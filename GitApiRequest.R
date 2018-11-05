@@ -5,6 +5,10 @@ library(httpuv)
 install.packages("httr")
 library(httr)
 
+require(devtools)
+install_github('rCharts', 'ramnathv')
+library(rCharts)
+
 # Can be github, linkedin etc depending on application
 oauth_endpoints("github")
 
@@ -35,3 +39,4 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 #Above code sourced from https://towardsdatascience.com/accessing-data-from-github-api-using-r-3633fb62cb08
 
 #Interrogating the GitAPI 
+

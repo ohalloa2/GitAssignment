@@ -18,7 +18,8 @@ myapp <- oauth_app(appname = "GitAssignment",
                    secret = "efcf9c80d35666e9ed2e4a080cfc022754990488")
 
 # Get OAuth credentials
-github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+#github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+github_token = github_init_oauth1.0(httr::oauth_endpoints("github"), myapp)
 
 # Use API
 gtoken <- config(token = github_token)
@@ -54,7 +55,6 @@ myData = fromJSON("https://api.github.com/users/ohalloa2") #Data frame which hol
 myData$followers #Displays number of followers i have
 myData$public_repos #Displays number of public repositories i have
 
-
 #Accessing information about my followers 
 myFollowers = fromJSON("https://api.github.com/users/ohalloa2/followers") #Specific link to find details about my followers 
 myFollowers$login #Gives details of the usernames of all users who follow me
@@ -74,5 +74,17 @@ repositories$created_at #Gives details of the date the repositories were created
 
 lcaRepos <- fromJSON("https://api.github.com/repos/ohalloa2/CS3012_LCA/commits")
 lcaRepos$commit$message #The details I included describing each commit to LCA assignment repository 
+
+#Can repeat the process above for other users to gether information about their profiles 
+#Do this by changing the user name in the link
+toconno5Data = fromJSON("https://api.github.com/users/toconno5") #Data frame which holds toconno5's information 
+toconno5Data$followers #Displays number of followers
+toconno5Data$public_repos #Displays number of public repositories 
+
+toconno5 <- fromJSON("https://api.github.com/users/toconno5/following")
+toconno5$login #names of all users that are following toconno5
+
+toconno5Repos=fromJSON("https://api.github.com/users/toconno5/repos") 
+toconno5Repos$name #names of all toconno5's repositories 
 
 

@@ -51,10 +51,6 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 #I will store numerous differet details about my GitHub profile in a data frame called 'myInfo'. 
 #I will access different parts of the data frame using the $ operator
 
-myData = fromJSON("https://api.github.com/users/ohalloa2") #Data frame which holds my information 
-myData$followers #Displays number of followers i have
-myData$public_repos #Displays number of public repositories i have
-
 #Accessing information about my followers 
 myFollowers = fromJSON("https://api.github.com/users/ohalloa2/followers") #Specific link to find details about my followers 
 myFollowers$login #Gives details of the usernames of all users who follow me
@@ -70,7 +66,7 @@ noImFollowing
 #Accessing repository specific information 
 repos=fromJSON("https://api.github.com/users/ohalloa2/repos") #Specific link to find details about my different repositories 
 repos$name #Details of the names of my public repositories
-repositories$created_at #Gives details of the date the repositories were created 
+repos$created_at #Gives details of the date the repositories were created 
 
 lcaRepos <- fromJSON("https://api.github.com/repos/ohalloa2/CS3012_LCA/commits")
 lcaRepos$commit$message #The details I included describing each commit to LCA assignment repository 

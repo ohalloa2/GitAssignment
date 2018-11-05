@@ -1,8 +1,8 @@
-#install.packages("jsonlite")
+install.packages("jsonlite")
 library(jsonlite)
-#install.packages("httpuv")
+install.packages("httpuv")
 library(httpuv)
-#install.packages("httr")
+install.packages("httr")
 library(httr)
 
 # Can be github, linkedin etc depending on application
@@ -34,4 +34,4 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 
 #Above code sourced from https://towardsdatascience.com/accessing-data-from-github-api-using-r-3633fb62cb08
 
-#Next Step
+#Interrogating the GitAPI 

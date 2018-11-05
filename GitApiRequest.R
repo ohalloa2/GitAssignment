@@ -61,4 +61,12 @@ myFollowers$login #Gives details of the usernames of all users who follow me
 noFollowers = length(myFollowers$login) #Give the number of people who follow my profile
 noFollowers
 
+#Accessing repository specific information 
+repos=fromJSON("https://api.github.com/users/ohalloa2/repos") #Specific link to find details about my different repositories 
+repos$name #Details of the names of my public repositories
+repositories$created_at #Gives details of the date the repositories were created 
+
+lcaRepos <- fromJSON("https://api.github.com/repos/ohalloa2/CS3012_LCA/commits")
+lcaRepos$commit$message #The details I included describing each commit to LCA assignment repository 
+
 

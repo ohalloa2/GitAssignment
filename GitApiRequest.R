@@ -34,8 +34,11 @@ gitDF = jsonlite::fromJSON(jsonlite::toJSON(json1))
 gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 #Above code sourced from https://towardsdatascience.com/accessing-data-from-github-api-using-r-3633fb62cb08
 
+#*******Above assignment for Github Access*******
 
 #******************************************************************************************************************************#
+
+#*****Assignment for building social graphs below****
 
 #Interrogating the GitAPI 
 #**************************#
@@ -108,7 +111,3 @@ toconno5Repos$name #names of all toconno5's repositories
 #Accessing information of starred items by phadej
 starred = fromJSON("https://api.github.com/users/octocat/starred")
 starred$name
-
-
-
-

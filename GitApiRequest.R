@@ -145,3 +145,5 @@ finalData$numOfFollowers
 
 myPlot <- nPlot(numOfFollowers ~ namesOfFollowers, data = finalData, type = "multiBarChart")
 myPlot #prints out the D3.JS interactive graph of how many followers my followers have
+
+#Fixing error in push??

@@ -53,9 +53,9 @@ mydata$followers #Give the number of people who follow my profile
 mydata$following
 
 #Accessing information about my followers 
-myFollowers = fromJSON("https://api.github.com/users/ohalloa2/followers") #Specific link to find details about my followers 
-myFollowers$login #Gives details of the usernames of all users who follow me
-myFollowers$type
+#myFollowers = fromJSON("https://api.github.com/users/ohalloa2/followers") #Specific link to find details about my followers 
+#myFollowers$login #Gives details of the usernames of all users who follow me
+#myFollowers$type
 myFollowers$starred_url
 myFollowers$url
 
@@ -93,12 +93,55 @@ jennybcFollowing= fromJSON("https://api.github.com/users/jennybc/following")
 jennybcFollowing$login #names of all users that are following jennybc
 jennybcFollowing$url
 
-
-jennybcRepos=fromJSON("https://api.github.com/users/jennybc/repos") 
-jennybcRepos$name #names of all toconno5's repositories 
-
 #Accessing information of starred items by phadej
 starred = fromJSON("https://api.github.com/users/octocat/starred")
 starred$name
 
+#######
+#install.packages("devtools")
+#install.packages("Rcpp")
+library(devtools)
+library(Rcpp)
+#install_github('ramnathv/rCharts', force= TRUE)
+require(rCharts)
 
+myDataJSon <- toJSON(myData, pretty = TRUE)
+myDataJSon
+
+#Step 2: Accessing information and displaying the number of followers that my followers have 
+
+followersNames <- fromJSON("https://api.github.com/users/ohalloa2/followers")
+followersNames$login #shown previously, gets the user names of my followers
+
+a <- "https://api.github.com/users/"
+b <- followersNames$login[4]
+b
+c <- "/followers"
+
+test <- sprintf("%s%s%s", a,b,c) 
+test                              #called test 
+
+#Step 2:
+
+numOfFollowers <- c() 
+namesOfFollowers <- c()
+for (i in 1:length(followersNames$login)) {
+  followers <- followersNames$login[i] 
+  jsonLink <- sprintf("%s%s%s", a, followers, c)
+  followData <- fromJSON(jsonLink)
+  numOfFollowers[i] = length(followData$login) 
+  namesOfFollowers[i] = followers 
+  
+}
+numOfFollowers
+namesOfFollowers
+finalData <- data.frame(numOfFollowers, namesOfFollowers) #stores two vectors as one
+
+#data frame
+finalData$namesOfFollowers
+finalData$numOfFollowers
+
+#Step3: Visualize 
+
+myPlot <- nPlot(numOfFollowers ~ namesOfFollowers, data = finalData, type = "multiBarChart")
+myPlot #prints out the D3.JS interactive graph of how many followers my followers have

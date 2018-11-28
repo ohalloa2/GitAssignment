@@ -100,47 +100,147 @@ starred$name
 myDataJSon <- toJSON(myData, pretty = TRUE)
 myDataJSon
 
-#Step 2: Accessing information and displaying the number of followers that my followers have 
+# #Step 2: Accessing information and displaying the number of followers that my followers have 
 
 followersNames <- fromJSON("https://api.github.com/users/ohalloa2/followers")
 followersNames$login #shown previously, gets the user names of my followers
-
+ 
 a <- "https://api.github.com/users/"
 b <- followersNames$login[4]
 b
 c <- "/followers"
-
+ 
 test <- sprintf("%s%s%s", a,b,c) 
 test                              #called test 
-
+ 
 #Step 2:
-
+ 
 numOfFollowers <- c() 
 namesOfFollowers <- c()
 for (i in 1:length(followersNames$login)) {
-  followers <- followersNames$login[i] 
-  jsonLink <- sprintf("%s%s%s", a, followers, c)
-  followData <- fromJSON(jsonLink)
-  numOfFollowers[i] = length(followData$login) 
-  namesOfFollowers[i] = followers 
-  
-}
-numOfFollowers
-namesOfFollowers
-finalData <- data.frame(numOfFollowers, namesOfFollowers) #stores two vectors as one
-
-#data frame
-finalData$namesOfFollowers
-finalData$numOfFollowers
-
-#Step3: Visualize 
-
-#install.packages("devtools")
-#install.packages("Rcpp")
+   followers <- followersNames$login[i] 
+   jsonLink <- sprintf("%s%s%s", a, followers, c)
+   followData <- fromJSON(jsonLink)
+   numOfFollowers[i] = length(followData$login) 
+   namesOfFollowers[i] = followers 
+   
+ }
+ numOfFollowers
+ namesOfFollowers
+ finalData <- data.frame(numOfFollowers, namesOfFollowers) #stores two vectors as one
+ 
+ #data frame
+ finalData$namesOfFollowers
+ finalData$numOfFollowers
+ 
+ #Step3: Visualize 
+ 
+ #install.packages("devtools")
+ #install.packages("Rcpp")
 library(devtools)
 library(Rcpp)
-#install_github('ramnathv/rCharts', force= TRUE)
+# #install_github('ramnathv/rCharts', force= TRUE)
 require(rCharts)
+ 
+ myPlot <- nPlot(numOfFollowers ~ namesOfFollowers, data = finalData, type = "multiBarChart")
+ myPlot #prints out the D3.JS interactive graph of how many followers my followers have
+ 
+ myPlot$save("myplot.html")
+ 
+# #This runs on my laptop - 
 
-myPlot <- nPlot(numOfFollowers ~ namesOfFollowers, data = finalData, type = "multiBarChart")
-myPlot #prints out the D3.JS interactive graph of how many followers my followers have
+
+###
+#Another way of plotting graphs - done using plotly and extracting information in a different way 
+
+#This way interroates another users information and puts there information in a data.frame 
+#This plot will plot followers against number of repositories
+
+#install.packages("plotly")
+library(plotly)
+
+
+#extracting jennybc information
+userData = GET("https://api.github.com/users/jennybc/followers?per_page=100;", gtoken)
+stop_for_status(userData)
+
+extract = content(userData)
+
+# Convert content to dataframe
+githubDB = jsonlite::fromJSON(jsonlite::toJSON(extract))
+githubDB$login
+id = githubDB$login
+user_ids = c(id)
+
+# Creating an empty vector and data.frame
+users = c()
+usersDB = data.frame(
+  username = integer(),
+  following = integer(),
+  followers = integer(),
+  repos = integer(),
+  dateCreated = integer()
+)
+
+#For loop to collect all the users 
+for(i in 1:length(user_ids))
+{
+  followingURL = paste("https://api.github.com/users/", user_ids[i], "/following", sep = "")
+  followingRequest = GET(followingURL, gtoken)
+  followingContent = content(followingRequest)
+  
+  #If they have no followers move on
+  if(length(followingContent) == 0)
+  {
+    next
+  }
+  
+  followingDF = jsonlite::fromJSON(jsonlite::toJSON(followingContent))
+  followingLogin = followingDF$login
+
+  for (j in 1:length(followingLogin))
+  {
+    if (is.element(followingLogin[j], users) == FALSE)
+    {
+      users[length(users) + 1] = followingLogin[j]
+      followingUrl2 = paste("https://api.github.com/users/", followingLogin[j], sep = "")
+      following2 = GET(followingUrl2, gtoken)
+      followingContent2 = content(following2)
+      followingDF2 = jsonlite::fromJSON(jsonlite::toJSON(followingContent2))
+      
+   
+      followingNumber = followingDF2$following
+      followersNumber = followingDF2$followers
+      reposNumber = followingDF2$public_repos
+      yearCreated = substr(followingDF2$created_at, start = 1, stop = 4)
+      
+      #Puts users data to a new row in dataframe
+      usersDB[nrow(usersDB) + 1, ] = c(followingLogin[j], followingNumber, followersNumber, reposNumber, yearCreated)
+    }
+    next
+  }
+  
+  #Max is 400 users 
+  if(length(users) > 400)
+  {
+    break
+  }
+  next
+}
+
+#Link R to my plotly account
+#Creates online interactive graphs based on the d3js library
+Sys.setenv("plotly_username"="ohalloa2")
+Sys.setenv("plotly_api_key"="WnIn8ohwy1HD1GEiwuUu")
+
+plot = plot_ly(data = usersDB, x = ~repos, y = ~followers, 
+                text = ~paste("Followers: ", followers, "<br>Repositories: ", 
+                              repos, "<br>Date Created:", dateCreated), color = ~dateCreated)
+plot
+
+#Upload the plot to Plotly
+Sys.setenv("plotly_username"="ohalloa2")
+Sys.setenv("plotly_api_key"="WnIn8ohwy1HD1GEiwuUu")
+api_create(plot1, filename = "Followers vs Repositories by Date")
+#PLOTLY LINK: https://plot.ly/~ohalloa2/1/#/
+

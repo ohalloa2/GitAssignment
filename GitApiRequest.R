@@ -17,7 +17,7 @@ myapp <- oauth_app(appname = "GitAssignment",
 
 # Get OAuth credentials
 github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
-
+1
 # Use API
 gtoken <- config(token = github_token)
 req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
@@ -97,14 +97,6 @@ jennybcFollowing$url
 starred = fromJSON("https://api.github.com/users/octocat/starred")
 starred$name
 
-#######
-#install.packages("devtools")
-#install.packages("Rcpp")
-library(devtools)
-library(Rcpp)
-#install_github('ramnathv/rCharts', force= TRUE)
-require(rCharts)
-
 myDataJSon <- toJSON(myData, pretty = TRUE)
 myDataJSon
 
@@ -143,7 +135,12 @@ finalData$numOfFollowers
 
 #Step3: Visualize 
 
+#install.packages("devtools")
+#install.packages("Rcpp")
+library(devtools)
+library(Rcpp)
+#install_github('ramnathv/rCharts', force= TRUE)
+require(rCharts)
+
 myPlot <- nPlot(numOfFollowers ~ namesOfFollowers, data = finalData, type = "multiBarChart")
 myPlot #prints out the D3.JS interactive graph of how many followers my followers have
-
-#Fixing error in push??
